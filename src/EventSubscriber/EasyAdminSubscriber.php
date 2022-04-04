@@ -12,6 +12,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            //fonction a executer avant la réalisation
             BeforeEntityPersistedEvent::class => ['setEntityCreatedAt'],
             BeforeEntityUpdatedEvent::class => ['setEntityUpdatedAt'],
         ];

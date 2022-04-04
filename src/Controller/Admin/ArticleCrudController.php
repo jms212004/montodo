@@ -29,10 +29,14 @@ class ArticleCrudController extends AbstractCrudController
 
         yield TextEditorField::new('content');
 
-        yield TextareaField::new('featuredText', 'Texte mis en avant');
+        yield TextareaField::new('featuredText', 'Thighlighted text');
 
 
-        yield DateTimeField::new('createdAt');
+        yield DateTimeField::new('createdAt')
+            ->hideOnForm();
+
+        yield DateTimeField::new('updatedAt')
+            ->hideOnForm();
     }
 
 

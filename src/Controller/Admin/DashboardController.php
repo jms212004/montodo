@@ -2,7 +2,8 @@
 
 namespace App\Controller\Admin;
 
-
+use App\Entity\Article;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -40,12 +41,28 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Montodo');
+            ->setTitle('My todo');
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+
+        yield MenuItem::subMenu('Items', 'fas fa-list')->setSubItems([
+            MenuItem::linkToCrud('List of item', 'fas fa-newspaper', Article::class),//lister les articles
+            MenuItem::linkToCrud('Add item', 'fab fa-plus', Article::class)->setAction(crud::PAGE_NEW),//ajouter
+        ]);
+
+        //yield MenuItem::linkToCrud('Articles', 'fas fa-map-marker-alt', Articles::class);
+        //yield MenuItem::linkToCrud('The Label', 'fas fa-list', 'app_article');
+    }
+
+    public function configureCrud(): Crud
+    {
+        return Crud::new()
+            // this defines the pagination size for all CRUD controllers
+            // (each CRUD controller can override this value if needed)
+            ->setPaginatorPageSize(10)
+        ;
     }
 }
