@@ -10,9 +10,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
+    
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
@@ -38,8 +40,10 @@ class DashboardController extends AbstractDashboardController
         // return $this->render('some/path/my-dashboard.html.twig');
     }
 
+
     public function configureDashboard(): Dashboard
     {
+        
         return Dashboard::new()
             ->setTitle('My todo');
     }
@@ -51,10 +55,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Items', 'fas fa-list')->setSubItems([
             MenuItem::linkToCrud('List of item', 'fas fa-newspaper', Article::class),//lister les articles
             MenuItem::linkToCrud('Add item', 'fab fa-plus', Article::class)->setAction(crud::PAGE_NEW),//ajouter
+            MenuItem::linkToCrud('Edit item', 'fas fa-edit', Article::class)->setAction(crud::PAGE_EDIT),//modifier
         ]);
 
-        //yield MenuItem::linkToCrud('Articles', 'fas fa-map-marker-alt', Articles::class);
-        //yield MenuItem::linkToCrud('The Label', 'fas fa-list', 'app_article');
     }
 
     public function configureCrud(): Crud
@@ -63,6 +66,13 @@ class DashboardController extends AbstractDashboardController
             // this defines the pagination size for all CRUD controllers
             // (each CRUD controller can override this value if needed)
             ->setPaginatorPageSize(10)
+            ->setEntityLabelInSingular('item')//renommer le bouton add
+            ->setEntityLabelInPlural('List')//renomer le titre du tableau
+            ->setSearchFields(['title'])
+            ->setDefaultSort(['updatedAt' => 'DESC'])
         ;
     }
+
+    
+    
 }
