@@ -41,7 +41,7 @@ class ArticleCrudController extends AbstractCrudController
         yield SlugField::new('slug')
             ->setTargetFieldName('title');
 
-        yield TextEditorField::new('content');
+        yield TextEditorField::new('content','Label content')->setrequired(false);
 
         yield TextareaField::new('featuredText', 'Thighlighted text');
 
